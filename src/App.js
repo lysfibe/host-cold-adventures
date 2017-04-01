@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 
 import store from './store'
 
-import HomePage from './views/Home/HomePage'
+import HomePage from './views/Home/HomeMap'
 
 const Router = StackNavigator({
 	home: { screen: HomePage },

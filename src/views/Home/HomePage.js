@@ -5,6 +5,8 @@ import Button from '../../ui/Button'
 import { colors } from '../../theme'
 import { container } from '../../util/colors'
 
+import MapView from 'react-native-maps';
+
 export default class HomePage extends PureComponent {
 	static navigationOptions = {
 		title: 'Home',
