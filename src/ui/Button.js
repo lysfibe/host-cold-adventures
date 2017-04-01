@@ -25,3 +25,5 @@ const Button = ({ onPress, onLongPress, containerStyle, noFeedback, highlight, .
 		</Touchable>
 	)
 }
+
+export default Button
