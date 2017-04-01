@@ -77,16 +77,17 @@ export default class HomeMap extends PureComponent {
 		}))
 
 	getSelectedLocation = () => {
-		const { latitude, longitude, latitudeDelta, longitudeDelta } = this.state.region
+		const { latitude, longitude } = this.state.region
 		return {
-			latitude: latitude + (latitudeDelta / 2),
-			longitude: longitude + (longitudeDelta / 2),
+			longitude,
+			latitude,
 		}
 	}
 
 	goToRader = () => {
+		const { navigate } = this.props.navigation
 		const { latitude, longitude } = this.getSelectedLocation()
-		alert(`You selected lat:${latitude} lng:${longitude}`)
+		navigate('locator', { target: { latitude, longitude } })
 	}
 }
 
