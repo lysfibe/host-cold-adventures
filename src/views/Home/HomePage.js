@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react'
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Image, Dimensions } from 'react-native'
 import Button from '../../ui/Button'
 import { colors } from '../../theme'
 import { container } from '../../util/colors'
@@ -14,10 +14,11 @@ export default class HomePage extends PureComponent {
 	}
 
 	render() {
+		const { width, height } = Dimensions.get('window')
 		return (
 			<View style={{ flex: 1 }}>
 				<View style={styles.title}>
-
+					<Image source={require('../../resources/title.png')} resizeMode="stretch" style={{ flex: 1, width }} />
 				</View>
 				<View style={{ flex: 3 }}>
 					<View style={{ margin: 10 }}>
