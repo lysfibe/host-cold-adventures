@@ -23,7 +23,9 @@ export default class LocationPage extends PureComponent {
 	componentWillMount() {
 		console.log(this.navProps)
 		navigator.geolocation.getCurrentPosition(
-			({ coords }) => this.setState({ initialLocation: coords, targetLocation: this.navProps.target, pings: [coords], distanceScale: this.getInitalDistance() }),
+			({ coords }) => this.setState({ initialLocation: coords, targetLocation: this.navProps.target, pings: [coords] },
+				() => this.setState({ distanceScale: this.getInitalDistance() }
+			)),
 			(...args) => console.log(...args) || alert('Oops!'),
 			{ enableHighAccuracy: true }
 		)
@@ -42,7 +44,7 @@ export default class LocationPage extends PureComponent {
 					{this.getCurrentDistance()}m away
 				</Text>
 				{ this.state.pings.map((ping, i) => (
-					<Text key={i}>{ ping.latitude } | { ping.longitude }</Text>
+					<Text key={JSON.stringify(ping)}>{ ping.latitude } | { ping.longitude }</Text>
 				))}
 			</ScrollView>
 		)
@@ -59,6 +61,7 @@ export default class LocationPage extends PureComponent {
 	}
 
 	getInitalDistance = () => {
+		alert(JSON.stringify(this.state.initialLocation))
 		return geolib.getDistance(this.state.initialLocation, this.state.targetLocation)
 	}
 
