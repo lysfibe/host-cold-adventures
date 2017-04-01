@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react'
-import { ScrollView, Text, View, Image, StyleSheet, Dimensions } from 'react-native'
+import { ScrollView, Text, View, Image, StyleSheet, Dimensions, Animated } from 'react-native'
 import { getDistance } from 'geolib'
 import { colors } from '../../theme'
 
@@ -9,6 +9,8 @@ export default class LocationPage extends PureComponent {
 	static navigationOptions = {
 		title: 'Location'
 	}
+
+	val = new Animated.Value(50)
 
 	state = {
 		initialLocation: {},
@@ -22,6 +24,7 @@ export default class LocationPage extends PureComponent {
 	}
 
 	componentWillMount() {
+		this.twing()
 		console.log(this.navProps)
 		navigator.geolocation.getCurrentPosition(
 			({ coords }) => this.setState({ initialLocation: coords, targetLocation: this.navProps.target, pings: [coords] },
@@ -39,6 +42,10 @@ export default class LocationPage extends PureComponent {
 	}
 
 	render() {
+		var interpolatedRotateAnimation = this.val.interpolate({
+			inputRange: [0, 100],
+			outputRange: ['0deg', '360deg']
+		});
 		const { width, height } = Dimensions.get('window')
 		return (
 		<View style={styles.container}>
@@ -52,7 +59,16 @@ export default class LocationPage extends PureComponent {
 			</ScrollView>
 			<View style={{ flex: 1 }}>
 				<Image source={require('../../resources/scale.png')} style={[styles.image, { bottom: 80, width: width - 40 }]} imageMode="stretch"/>
-				<Image source={require('../../resources/pointer.png')} style={[styles.image, { bottom: 20, left: width/2 - 62 }]} imageMode="stretch"/>
+				<Animated.View
+					style={
+						[
+							{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 },
+							{transform: [{rotate: interpolatedRotateAnimation}]}
+						]
+					}
+				>
+					<Image source={require('../../resources/pointer.png')} style={[styles.image, { bottom: 20, left: width/2 - 62 }]} imageMode="stretch"/>
+				</Animated.View>
 				<Image source={require('../../resources/snowflake.png')} style={[styles.image, { bottom: 10, left: 5 }]} imageMode="stretch"/>
 				<Image source={require('../../resources/fire.png')} style={[styles.image, { bottom: 10, right: 10 }]} imageMode="stretch"/>
 			</View>
@@ -68,6 +84,20 @@ export default class LocationPage extends PureComponent {
 			(...args) => console.log(...args) || alert('Oops!'),
 			{ enableHighAccuracy: true }
 		)
+	}
+
+	twing = () => {
+		Animated.timing(this.val, {
+			toValue: 100,
+			duration: 1000,
+		}).start(this.twang);
+	}
+
+	twang = () => {
+		Animated.timing(this.val, {
+			toValue: 0,
+			duration: 1000,
+		}).start(this.twing);
 	}
 
 	getInitalDistance = () => {
