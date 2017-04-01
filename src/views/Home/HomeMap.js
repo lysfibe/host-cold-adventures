@@ -3,7 +3,11 @@ import React, { PureComponent } from 'react'
 import { View, Text, Dimensions, StyleSheet } from 'react-native'
 import MapView from 'react-native-maps'
 import mapstyle from './mapstyle'
+
 import { colors } from '../../theme'
+import { container } from '../../util/colors'
+
+import Button from '../../ui/Button'
 
 export type Region = {
 	longitude: number,
@@ -52,6 +56,13 @@ export default class HomeMap extends PureComponent {
 				/>
 				<View style={[styles.verticalLine, {left: width / 2}]}/>
 				<View style={[styles.horizontalLine, {top: height / 2}]}/>
+				<Button
+					containerStyle={[ styles.buttonContainer, container(colors.palette.blue) ]}
+					onPress={this.goToRader}
+					style={styles.button}
+				>
+					Lets Go!
+				</Button>
 			</View>
 		)
 	}
@@ -64,6 +75,19 @@ export default class HomeMap extends PureComponent {
 				longitude,
 			}
 		}))
+
+	getSelectedLocation = () => {
+		const { latitude, longitude, latitudeDelta, longitudeDelta } = this.state.region
+		return {
+			latitude: latitude + (latitudeDelta / 2),
+			longitude: longitude + (longitudeDelta / 2),
+		}
+	}
+
+	goToRader = () => {
+		const { latitude, longitude } = this.getSelectedLocation()
+		alert(`You selected lat:${latitude} lng:${longitude}`)
+	}
 }
 
 
@@ -82,4 +106,15 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 	},
+	buttonContainer: {
+		position: 'absolute',
+		bottom: 35,
+		left: 10,
+		right: 10,
+		padding: 10,
+	},
+	button: {
+		color: colors.shades.white,
+		textAlign: 'center',
+	}
 })
