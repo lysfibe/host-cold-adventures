@@ -11,7 +11,7 @@ type Props = {
 	noFeedback?: boolean,
 }
 
-const Button = ({ onPress, onLongPress, containerStyle, noFeedback, highlight, ...props }: Props) => {
+const Button = ({ onPress, onLongPress, containerStyle, noFeedback, highlight, as: As = Text, ...props }: Props) => {
 	let Touchable = TouchableOpacity
 	if (noFeedback) {
 		Touchable = TouchableWithoutFeedback
@@ -21,7 +21,7 @@ const Button = ({ onPress, onLongPress, containerStyle, noFeedback, highlight, .
 
 	return (
 		<Touchable onPress={onPress} onLongPress={onLongPress} style={containerStyle}>
-			<Text {...props} />
+			<As {...props} />
 		</Touchable>
 	)
 }

@@ -12,6 +12,7 @@ export default class LocationPage extends PureComponent {
 	state = {
 		initialLocation: {},
 		targetLocation: {},
+		distanceScale: 0,
 		pings: [],
 	}
 
@@ -22,7 +23,7 @@ export default class LocationPage extends PureComponent {
 	componentWillMount() {
 		console.log(this.navProps)
 		navigator.geolocation.getCurrentPosition(
-			({ coords }) => this.setState({ initialLocation: coords, targetLocation: this.navProps.target, pings: [coords] }),
+			({ coords }) => this.setState({ initialLocation: coords, targetLocation: this.navProps.target, pings: [coords], distanceScale: this.getInitalDistance() }),
 			(...args) => console.log(...args) || alert('Oops!'),
 			{ enableHighAccuracy: true }
 		)

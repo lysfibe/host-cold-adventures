@@ -7,6 +7,7 @@ import mapstyle from './mapstyle'
 import { colors } from '../../theme'
 import { container } from '../../util/colors'
 
+import Icon from '../../ui/Icon'
 import Button from '../../ui/Button'
 
 export type Region = {
@@ -37,11 +38,7 @@ export default class HomeMap extends PureComponent {
 	}
 
 	componentWillMount() {
-		navigator.geolocation.getCurrentPosition(
-			({coords}) => this.setLatLong(coords),
-			(...args) => console.log(args) || alert('Oops!'),
-			{enableHighAccuracy: true}
-		)
+		this.resetLocation()
 	}
 
 	render() {
@@ -63,6 +60,14 @@ export default class HomeMap extends PureComponent {
 				>
 					Lets Go!
 				</Button>
+				<Button
+					as={Icon}
+					onPress={this.resetLocation}
+					name="gps-fixed"
+					size={32}
+					containerStyle={{ position: 'absolute', top: 10, right: 10, width: 50, height: 50, backgroundColor: colors.shades.darkgrey, alignItems: 'center', justifyContent: 'center', borderRadius: 25 }}
+					style={{ color: colors.shades.offwhite }}
+				/>
 			</View>
 		)
 	}
@@ -82,6 +87,14 @@ export default class HomeMap extends PureComponent {
 			longitude,
 			latitude,
 		}
+	}
+
+	resetLocation = () => {
+		navigator.geolocation.getCurrentPosition(
+			({coords}) => this.setLatLong(coords),
+			(...args) => console.log(args) || alert('Oops!'),
+			{enableHighAccuracy: true}
+		)
 	}
 
 	goToRader = () => {
