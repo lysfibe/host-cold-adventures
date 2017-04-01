@@ -1,7 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react'
-import { ScrollView, Text } from 'react-native'
+import { ScrollView, Text, View, Image, StyleSheet, Dimensions } from 'react-native'
 import { getDistance } from 'geolib'
+import { colors } from '../../theme'
 
 export default class LocationPage extends PureComponent {
 
@@ -38,15 +39,24 @@ export default class LocationPage extends PureComponent {
 	}
 
 	render() {
+		const { width, height } = Dimensions.get('window')
 		return (
-			<ScrollView style={{ flex: 1 }}>
+		<View style={styles.container}>
+			<ScrollView style={{ flex: 1, margin: 10, backgroundColor: colors.shades.offwhite }}>
 				<Text style={{ fontSize: 100, textAlign: 'center' }}>
 					{this.getCurrentDistance()}m away
 				</Text>
 				{ this.state.pings.map((ping, i) => (
-					<Text key={JSON.stringify(ping)}>{ ping.latitude } | { ping.longitude }</Text>
+					<Text key={String(i) + JSON.stringify(ping)}>{ ping.latitude } | { ping.longitude }</Text>
 				))}
 			</ScrollView>
+			<View style={{ flex: 1 }}>
+				<Image source={require('../../resources/scale.png')} style={[styles.image, { bottom: 80, width: width - 40 }]} imageMode="stretch"/>
+				<Image source={require('../../resources/pointer.png')} style={[styles.image, { bottom: 20, left: width/2 - 62 }]} imageMode="stretch"/>
+				<Image source={require('../../resources/snowflake.png')} style={[styles.image, { bottom: 10, left: 5 }]} imageMode="stretch"/>
+				<Image source={require('../../resources/fire.png')} style={[styles.image, { bottom: 10, right: 10 }]} imageMode="stretch"/>
+			</View>
+		</View>
 		)
 	}
 
@@ -61,7 +71,6 @@ export default class LocationPage extends PureComponent {
 	}
 
 	getInitalDistance = () => {
-		alert(JSON.stringify(this.state.initialLocation))
 		return geolib.getDistance(this.state.initialLocation, this.state.targetLocation)
 	}
 
@@ -72,3 +81,16 @@ export default class LocationPage extends PureComponent {
 		} else return 0
 	}
 }
+
+const styles = StyleSheet.create({
+	container: {
+		backgroundColor: colors.shades.darkgrey,
+		flex: 1,
+	},
+	image: {
+		position: 'absolute',
+		bottom: 60,
+		flex: 1,
+		marginHorizontal: 20,
+	},
+})
